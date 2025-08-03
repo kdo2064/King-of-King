@@ -1,87 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-9">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=0.0">
-    <title>King Of King</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>King Of King - Game</title>
     
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KC2Y0L0QPT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KC2Y0L0QPT');
-    
-     var audio = new Audio('prank.mp3');
-    window.addEventListener('load', function() {
-        audio.loop = true;
-        audio.play();
-      });
-    
-    audio.addEventListener('canplaythrough', function() {
-        audio.loop = true;
-        audio.play();
-        });  
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KC2Y0L0QPT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KC2Y0L0QPT');
+    </script>
 
     <style>
-        *{
+        * {
             padding: 0;
             margin: 0;
-            box-sizing: 0;
-            box-shadow: 0;
+            box-sizing: border-box;
         }
 
-        body{
+        body {
             width: 100vw;
             height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
         }
 
-        #clickme{
-            padding-top: 50rem;
-            text-align: center;
+        .game-container {
             height: 100vh;
-            border-color: red;
-            color: black;
-            font-weight: bolder;
-            font-size: 1.5rem;
-        }
-        .king{
-            height: 100vh;
-            background-color: antiquewhite;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 10px #fff; }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 20px #fff, 0 0 30px #fff; }
+        }
+
+        .game-description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .add-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .add-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+        }
+
+        .add-button:active {
+            transform: translateY(-1px);
+        }
+
+        .game-area {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .game-content {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+        }
+
+        .score {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .click-message {
+            font-size: 1.1rem;
+            color: white;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
     </style>
 </head>
-<body id="lol">
-    <div class="king" id="king">
-        <center>
-            <span id="clickme">Click Anyway In the Screen</span> 
-        </center>
+<body>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Menu -->
+    <div class="game-container" id="mainMenu">
+        <h1 class="game-title">👑 KING OF KING 👑</h1>
+        <p class="game-description">
+            Welcome to the ultimate gaming experience! Click anywhere on the screen to hear the royal sound. 
+            Are you ready to become the King of Kings?
+        </p>
+        <button class="add-button" id="startGame">🎮 START GAME</button>
+    </div>
+
+    <!-- Game Area -->
+    <div class="game-area" id="gameArea">
+        <button class="back-button" id="backButton">← Back to Menu</button>
+        <div class="game-content">
+            <div class="score" id="score">Score: 0</div>
+            <h2>🎯 Click Anywhere to Play!</h2>
+            <p class="click-message">Every click increases your score and plays the royal sound</p>
+        </div>
     </div>
 
     <script>
+        // Audio setup
         var audio = new Audio('prank.mp3');
-        audio.addEventListener('canplaythrough', function() {
-        audio.loop = true;
-        audio.play();
-        });  
+        audio.preload = 'auto';
         
-        audio.play();
+        // Game variables
+        let score = 0;
+        let gameStarted = false;
 
-        var no = document.getElementById("clickme");
-        no.addEventListener("click", function (event){
-            audio.loop = true;
-            audio.play();
+        // DOM elements
+        const mainMenu = document.getElementById('mainMenu');
+        const gameArea = document.getElementById('gameArea');
+        const startButton = document.getElementById('startGame');
+        const backButton = document.getElementById('backButton');
+        const scoreElement = document.getElementById('score');
+
+        // Play audio function
+        function playAudio() {
+            audio.currentTime = 0; // Reset audio to beginning
+            audio.play().catch(function(error) {
+                console.log('Audio play failed:', error);
+            });
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Start game
+        startButton.addEventListener('click', function() {
+            mainMenu.style.display = 'none';
+            gameArea.style.display = 'flex';
+            gameStarted = true;
+            score = 0;
+            updateScore();
+            playAudio();
         });
 
-        var king = document.getElementById("king");
-        king.addEventListener("click", function (event){
-            audio.loop = true;
-            audio.play();
+        // Back to menu
+        backButton.addEventListener('click', function() {
+            gameArea.style.display = 'none';
+            mainMenu.style.display = 'flex';
+            gameStarted = false;
+        });
+
+        // Update score
+        function updateScore() {
+            scoreElement.textContent = `Score: ${score}`;
+        }
+
+        // Click anywhere functionality
+        document.addEventListener('click', function(event) {
+            // Don't count clicks on buttons
+            if (!event.target.matches('button')) {
+                playAudio();
+                
+                if (gameStarted) {
+                    score++;
+                    updateScore();
+                    
+                    // Add click effect
+                    createClickEffect(event.clientX, event.clientY);
+                }
+            }
+        });
+
+        // Create click effect
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.style.position = 'fixed';
+            effect.style.left = x + 'px';
+            effect.style.top = y + 'px';
+            effect.style.width = '20px';
+            effect.style.height = '20px';
+            effect.style.background = 'white';
+            effect.style.borderRadius = '50%';
+            effect.style.pointerEvents = 'none';
+            effect.style.zIndex = '1000';
+            effect.style.animation = 'clickEffect 0.5s ease-out forwards';
+            
+            document.body.appendChild(effect);
+            
+            setTimeout(() => {
+                document.body.removeChild(effect);
+            }, 500);
+        }
+
+        // Add click effect animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes clickEffect {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(3);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize particles
+        createParticles();
+
+        // Auto-play audio on page load (if browser allows)
+        window.addEventListener('load', function() {
+            audio.loop = false; // Don't auto-loop
+            // Note: Most browsers block auto-play, so this might not work
+            audio.play().catch(function(error) {
+                console.log('Auto-play blocked by browser');
+            });
         });
     </script>
 </body>
